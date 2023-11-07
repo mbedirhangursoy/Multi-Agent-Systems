@@ -1,0 +1,31 @@
+science_fiction_novel("I, Robot").
+film("I, Robot").
+
+science_fiction_writer(isaac_asimov).
+writen_by("I, Robot", isaac_asimov).
+
+human(bedirhan).
+
+does_not_harm("I, Robot", bedirhan).
+does_not_injure("I, Robot", bedirhan).
+obeys("I, Robot", bedirhan).
+protects("I, Robot", "I, Robot").
+
+firstLaw(I, X):- does_not_harm(I, X); does_not_injure(I, X).
+secondLaw(I, X):- obeys(I, X), firstLaw(I, X).
+thirdLaw(I, X):- protects(I, I), firstLaw(I, X), secondLaw(I, X).
+
+
+striker(smith).
+striker(sanchez).
+winger(smith).
+competitor(X, Y) :- (winger(X), winger(Y); striker(X), striker(Y)), Y \= X.
+
+subtract(X, 0, X).
+subtract(X, Y, Z) :- subtract(succ(X), Y, succ(Z)).
+
+warm(a). 
+happy(b).
+summer(X):- warm(Y).
+warm(X):- warm(Y). 
+summer(X):- happy(X). 
