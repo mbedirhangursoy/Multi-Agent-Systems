@@ -1,0 +1,51 @@
+
+
+bike(wn_entrance,mb_entrance,1).
+bike(botanic_garden,wn_entrance,4).
+walk(wn_entrance,wn_k137,2).
+walk(mb_entrance,mb_6th_floor,5).
+
+route_by_bike(A, B):- bike(A, B, _).
+route_by_bike(A, B):- bike(A, C, _), route_by_bike(C, B).
+
+
+route(A, B, T, T):- bike(A, B, _); walk(A, B, _).
+route(A, B, T, L):- bike(A, C, M), N is M + T, route(C, B, N, L); walk(A, C, M), N is M + T, route(C, B, N).
+
+
+above(X, Y) :- on(X, Y).
+above(X, Y) :- on(X, Z), above(Z, Y).
+
+
+above_acc(X, Y, A, A):- on(X, Y).
+above_acc(X, Y, A, L):- Anew is A+1, on(X, Z), above_acc(Z, Y, Anew, L).
+
+atLeastThree(X):- above_acc(X, Y, 1, L), L >= 3.
+
+exactlyThree(X):- above_acc(X, Y, 1, L), L is 3.
+
+
+on(a,b).
+on(b,c).
+on(c,d).
+on(d,e).
+on(e,table).
+tower([X]) :- on(X,table).
+tower([X,Y|T]) :- on(X,Y), tower([Y|T]).
+
+
+acc_tower([X], A, A):- on(X, table).
+acc_tower([X,Y|T], A, L):- Anew is A+1, on(X, Y), acc_tower([Y|T], Anew, L).
+
+exactlyThreeTower([X,Y|T]):- acc_tower([X,Y|T], 0, L), L is 3.
+
+
+sum_list([], 0).
+sum_list([H|T], Sum):- sum_list(T, Rest), Sum is H + Rest.
+
+
+sum_initial(X, X, []).
+sum_initial([X | W], Z, [X | Y]):- sum_initial(W, Z, Y).
+
+sum(X, Y, Z):- sum_initial(X, Y, Z), sum_list(Y, Sum1), sum_list(Z, Sum2), Sum1 =:= Sum2.
+sum(X, Y, Z):- sum_initial(X, Z, Y), sum_list(Y, Sum1), sum_list(Z, Sum2), Sum1 =:= Sum2.

@@ -29,8 +29,9 @@ competitor(X, Y) :- (winger(X), winger(Y);() not(Y = X)).
 
 
 subtract(X, 0, X).
-subtract(succ(X),Y, succ(Z)):- subtract(X,Y,Z).
-subtract(X, succ(Y), -(succ(Z))):- subtract(X,Y,Z).
+subtract(0, X, -X).
+subtract(succ(X), succ(Y), Z) :- subtract(X, Y, Z).
+
 
 
 
@@ -39,7 +40,7 @@ add(X, 0, X).
 
 add(succ(X), Y, succ(Z)):- add(X, Y, Z).
 add(-(succ(X)), -(Y), -(succ(Z))):- add(X, Y, Z).
-add(succ(X), -(Y), succ(Z)):- subtract(X,Y,Z).
+add(succ(X), -(succ(Y)), Z):- subtract(X, Y, Z).
 add(-(succ(X)), Y, succ(Z)):- subtract(Y,X,Z).
 
 
