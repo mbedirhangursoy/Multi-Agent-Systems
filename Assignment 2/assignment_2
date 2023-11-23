@@ -8,10 +8,22 @@ walk(mb_entrance,mb_6th_floor,5).
 route_by_bike(A, B):- bike(A, B, _).
 route_by_bike(A, B):- bike(A, C, _), route_by_bike(C, B).
 
+routeT(A, B):- bike(A, B, _); walk(A, B, _).
+routeT(A, B):- bike(A, C, _), routeT(C, B); walk(A, C, _), routeT(C, B).
 
-route(A, B, T, T):- bike(A, B, _); walk(A, B, _).
-route(A, B, T, L):- bike(A, C, M), N is M + T, route(C, B, N, L); walk(A, C, M), N is M + T, route(C, B, N).
+routeAcc(A, B, T, R):- bike(A, B, G), R is G+T; walk(A, B, G), R is G+T.
+routeAcc(A, B, T, L):- bike(A, C, M), N is M + T, routeAcc(C, B, N, L); walk(A, C, M), N is M + T, routeAcc(C, B, N, L).
 
+route(A, B, L):- routeAcc(A, B, 0, L).
+
+
+
+
+on(a,b).
+on(b,c).
+on(c,d).
+on(d,e).
+on(e,table).
 
 above(X, Y) :- on(X, Y).
 above(X, Y) :- on(X, Z), above(Z, Y).
@@ -22,14 +34,8 @@ above_acc(X, Y, A, L):- Anew is A+1, on(X, Z), above_acc(Z, Y, Anew, L).
 
 atLeastThree(X):- above_acc(X, Y, 1, L), L >= 3.
 
-exactlyThree(X):- above_acc(X, Y, 1, L), L is 3.
+exactlyThree(X):- above_acc(X, Y, 1, L), L =:= 3.
 
-
-on(a,b).
-on(b,c).
-on(c,d).
-on(d,e).
-on(e,table).
 tower([X]) :- on(X,table).
 tower([X,Y|T]) :- on(X,Y), tower([Y|T]).
 
@@ -37,7 +43,12 @@ tower([X,Y|T]) :- on(X,Y), tower([Y|T]).
 acc_tower([X], A, A):- on(X, table).
 acc_tower([X,Y|T], A, L):- Anew is A+1, on(X, Y), acc_tower([Y|T], Anew, L).
 
-exactlyThreeTower([X,Y|T]):- acc_tower([X,Y|T], 0, L), L is 3.
+exactlyThreeTower(X):- acc_tower([X,Y|T], 0, L), L =:= 3.
+
+
+
+
+
 
 
 sum_list([], 0).
@@ -47,5 +58,24 @@ sum_list([H|T], Sum):- sum_list(T, Rest), Sum is H + Rest.
 sum_initial(X, X, []).
 sum_initial([X | W], Z, [X | Y]):- sum_initial(W, Z, Y).
 
-sum(X, Y, Z):- sum_initial(X, Y, Z), sum_list(Y, Sum1), sum_list(Z, Sum2), Sum1 =:= Sum2.
-sum(X, Y, Z):- sum_initial(X, Z, Y), sum_list(Y, Sum1), sum_list(Z, Sum2), Sum1 =:= Sum2.
+sum_perm(X, Y, Z):- permutation(X, Result), sum_initial(Result, Y, Z).
+
+sum(X, Y, Z):- sum_perm(X, Y, Z), sum_list(Y, Sum1), sum_list(Z, Sum2), Sum1 =:= Sum2.
+
+
+movie("The Imitation Game",[actor("Knightely","Keira"),
+actor("Cumberbatch","Benedict")],[genre("drama")],114,13,8).
+movie("The Godfather",[actor("Brando","Marlon")],[genre("drama"),genre("crime")],170,18,9).
+movie("A Bad Movie",[actor("Eastwood","Clint")],[genre("action")],100,16,2).
+movie("Z Good Movie",[actor("Thurman","Uma")],[genre("thriller")],90,16,10).
+
+
+listMovies(Result):- findall(L, movie(L, _,_,_,_,_),Result).
+
+listMoviesByName(F):- listMovies(L), sort(L, F).
+
+
+
+listMoviesByGenre(G, Result):- findall(L, (movie(L, _, Gs,_,_,_), member(G, Gs)), Result).
+
+
