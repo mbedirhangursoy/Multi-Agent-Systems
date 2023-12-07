@@ -17,8 +17,10 @@ define robot {
 	update sequenceIndex/1. % expresses the index of the currently needed color in the sequence
 	replace atBlock/1. % This player is within the reach of the block.
 	update block/1. % This percept stores the information that our agent has seen the particular block before it leaves the room again.
-	add completed_task/1.
+	add completed_task/0.
 	replace next_color_needed/1.
+	replace previous_color/1.
+	add found_all_blocks_still_needed/0.
 	
 	
 }

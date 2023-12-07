@@ -4,6 +4,11 @@ module robotUpdate {
 	% update in which rooms the agent has been.
 	if in(PlaceID), room(PlaceID) then insert( visited(PlaceID) ).
 	
-	
+	if in('DropZone'), block(BlockID, ColorID, PlaceID), holding(BlockID) then delete ( block(BlockID, ColorID, PlaceID) ).
+
 	forall in(PlaceID), room(PlaceID), color(BlockID, ColorID) do insert( block(BlockID, ColorID, PlaceID) ).
+	
+
+	
+	
 }

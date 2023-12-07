@@ -10,8 +10,9 @@
 	sequenceIndex/1, % expresses the index of the currently needed color in the sequence
 	atBlock/1,		% still need the fifth percept.
 	block/3,
-	completed_task/1,
-	next_color_needed/1.
+	completed_task/0,
+	next_color_needed/1,
+	found_all_blocks_still_needed/0.
 
 % A room is a place with exactly one neighbour; in other words, there is only one way to
 % get to and from that place.
@@ -19,9 +20,9 @@ room(PlaceID) :- zone(_, PlaceID, _, _, Neighbours), length(Neighbours, 1).
 
 % A room has not yet been visited if the robot has not yet been there.
 not_yet_visited(PlaceID) :- room(PlaceID), not( visited(PlaceID) ).
+ 
+completed_task:- sequence(List), length(List, Y), sequenceIndex(Y).
 
-
-completed_task(I):- sequence(List), length(List, Y), I is Y - 1, sequenceIndex(I).
-
+found_all_blocks_still_needed:- sequence(List), findall(ColorID, block(_,ColorID,_), List2), subset(List, List2).
 
 next_color_needed(ColorID):- sequenceIndex(Index), sequence(ListColors), nth0(Index, ListColors, ColorID).
