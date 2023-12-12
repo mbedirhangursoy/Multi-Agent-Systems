@@ -4,8 +4,10 @@ module robotUpdate {
 	% update in which rooms the agent has been.
 	if in(PlaceID), room(PlaceID) then insert( visited(PlaceID) ).
 	
+	% When a block has been delivered it deletes it from the database in order to stop the bot going to the same room when the same color block is in the sequence.
 	if in('DropZone'), block(BlockID, ColorID, PlaceID), holding(BlockID) then delete ( block(BlockID, ColorID, PlaceID) ).
-
+	
+	% All the block that it finds in a room, it adds it to the database.
 	forall in(PlaceID), room(PlaceID), color(BlockID, ColorID) do insert( block(BlockID, ColorID, PlaceID) ).
 	
 

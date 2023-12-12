@@ -16,6 +16,7 @@ module robotControl {
 	if next_color_needed(ColorID), block(_, ColorID, PlaceID), not( state(traveling) ), found_all_blocks_still_needed
 	then goTo(PlaceID).
 	
+	% It goes to a specific block to pick it up if it knows what block it needs and if all the blocks that it needs are found.
 	if next_color_needed(ColorID), in(PlaceID), block(BlockID, ColorID, PlaceID), not( atBlock(BlockID) ), not(holding(_)), found_all_blocks_still_needed  then goToBlock(BlockID).
 	
 	% goto a room that has not been visited.

@@ -21,8 +21,11 @@ room(PlaceID) :- zone(_, PlaceID, _, _, Neighbours), length(Neighbours, 1).
 % A room has not yet been visited if the robot has not yet been there.
 not_yet_visited(PlaceID) :- room(PlaceID), not( visited(PlaceID) ).
  
+ % If the sequence index equals to the length of the sequence list, then we know that we have completed our job.
 completed_task:- sequence(List), length(List, Y), sequenceIndex(Y).
 
+% if the list of blocks in the sequence is a subset of all the blocks that we observe, then we know that we found all the blocks that we needed.
 found_all_blocks_still_needed:- sequence(List), findall(ColorID, block(_,ColorID,_), List2), subset(List, List2).
 
+% it uses that sequence Index to find the next color needed from the sequence list.
 next_color_needed(ColorID):- sequenceIndex(Index), sequence(ListColors), nth0(Index, ListColors, ColorID).
