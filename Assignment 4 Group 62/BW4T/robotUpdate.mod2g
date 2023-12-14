@@ -1,0 +1,19 @@
+use bw4tKnowledge.
+
+module robotUpdate {
+	% update in which rooms the agent has been.
+	if in(PlaceID), room(PlaceID) then insert( visited(PlaceID) ).
+	
+	
+	% When a block has been delivered it deletes it from the database in order to stop the bot going to the same room when the same color block is in the sequence.
+	if  holding(BlockID), block(BlockID, ColorID, PlaceID) then delete ( block(BlockID, ColorID, PlaceID) ) + insert ( block(BlockID, ColorID, holding) ).
+	
+	if in('DropZone'), block(BlockID, ColorID, holding) then delete( block(BlockID, ColorID, holding) ).
+	
+	% All the block that it finds in a room, it adds it to the database.
+	forall in(PlaceID), room(PlaceID), color(BlockID, ColorID) do insert( block(BlockID, ColorID, PlaceID) ).
+	
+
+	
+	
+}

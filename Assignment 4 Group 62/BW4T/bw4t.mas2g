@@ -1,0 +1,31 @@
+% Mehmet Bedirhan Gursoy, 2773165, bedirhan.gursoy@gmail.com
+% Denis 
+use "bw4t-client-3.10.1.jar" with
+	clientip ="localhost", clientport="2000", 
+	serverip = "localhost", serverport = "8000",
+	agentcount = "3", humancount = "0", launchgui = "false", goal = "true".
+
+define robot {
+	use robotUpdate for updates.
+	use robotControl for decisions.
+	
+	% percept handling
+	replace in/1. % indicates that the robot is in a room. #always
+	update state/1. % keeps track of state of movement of the robot. #onchage
+	add zone/5. % provides initial information about all the places in BW4T. #once 
+	replace color/2. % provides information about the color of the blocks.
+	replace holding/1. % provides information on the block this player is holding.
+	add sequence/1. % provides information about the color order in which blocks have to be dropeed at the drop zone.
+	update sequenceIndex/1. % expresses the index of the currently needed color in the sequence
+	replace atBlock/1. % This player is within the reach of the block.
+	update block/1. % This percept stores the information that our agent has seen the particular block before it leaves the room again.
+	add completed_task/0. % This runs the exit module when the task is complete.
+	replace next_color_needed/1. % This finds the next color needed when a bot completes a drop of a block.
+	add found_all_blocks_still_needed/0. % This works in a way that it becomes true when the places of all the blocks needed are found.
+	
+	
+}
+
+launchpolicy {
+	when * launch robot.
+}
