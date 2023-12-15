@@ -18,10 +18,11 @@ define robot {
 	add sequence/1. % provides information about the color order in which blocks have to be dropeed at the drop zone.
 	update sequenceIndex/1. % expresses the index of the currently needed color in the sequence
 	replace atBlock/1. % This player is within the reach of the block.
-	update block/1. % This percept stores the information that our agent has seen the particular block before it leaves the room again.
+	update block/3. % This percept stores the information that our agent has seen the particular block before it leaves the room again.
 	add completed_task/0. % This runs the exit module when the task is complete.
 	replace next_color_needed/1. % This finds the next color needed when a bot completes a drop of a block.
 	add found_all_blocks_still_needed/0. % This works in a way that it becomes true when the places of all the blocks needed are found.
+	update target/2.
 	
 	
 }

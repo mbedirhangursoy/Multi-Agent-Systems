@@ -13,6 +13,8 @@
 	completed_task/0,
 	next_color_needed/1,
 	found_all_blocks_still_needed/0.
+	target/2.
+	next_color_i_need/1.
 
 % A room is a place with exactly one neighbour; in other words, there is only one way to
 % get to and from that place.
@@ -29,3 +31,9 @@ found_all_blocks_still_needed:- sequence(List), findall(ColorID, block(_,ColorID
 
 % it uses that sequence Index to find the next color needed from the sequence list.
 next_color_needed(ColorID):- sequenceIndex(Index), sequence(ListColors), nth0(Index, ListColors, ColorID).
+
+% find the next color the robot itself needs.
+next_color_i_need(ColorID):- target(self, Index), sequence(ListColors), nth0(Index, ListColors, ColorID).
+
+
+find_next_index_target(Index):- sequenceIndex(Index); sequenceIndex(IndexOld), IndexOld < 5, Index is IndexOld + 1.
